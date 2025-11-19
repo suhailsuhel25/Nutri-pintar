@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NUTRI PINTAR - Edukasi Gizi dan Kalkulator Nutrisi</title>
+    <link rel="icon" type="image/x-icon" href="logo.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -212,9 +213,9 @@
     <header class="glass-effect shadow-lg sticky top-0 z-50">
         <nav class="container mx-auto px-6 py-4">
             <div class="flex justify-between items-center">
-                <div class="text-2xl font-bold gradient-text flex items-center">
-                    <i class="fas fa-leaf mr-2"></i>
-                    <span>NUTRI PINTAR</span>
+                <div class="flex items-center cursor-pointer" onclick="showPage('home'); window.scrollTo({top: 0, behavior: 'smooth'});">
+                    <img src="logo.png" alt="NUTRI PINTAR Logo" class="h-10 w-10 mr-2">
+                    <span class="text-2xl font-bold gradient-text">NUTRI PINTAR</span>
                 </div>
                 <div class="hidden md:flex space-x-6">
                     <button onclick="showPage('home')" class="text-gray-700 hover:text-nutri-green font-medium transition-colors duration-300 flex items-center">
@@ -352,6 +353,47 @@
                         <button onclick="showPage('calculator')" class="bg-nutri-dark text-white px-8 py-4 rounded-xl font-semibold nutri-btn text-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
                             <i class="fas fa-calculator mr-2"></i>Hitung Kebutuhan
                         </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contact Section -->
+            <div class="py-16 bg-gradient-to-br from-nutri-light to-nutri-bg">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Hubungi Kami</h2>
+                        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Punya pertanyaan atau saran? Tim kami siap membantu Anda.</p>
+                    </div>
+                    
+                    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
+                        <form id="contact-form">
+                            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label class="block text-gray-700 mb-2 font-medium">Nama Lengkap</label>
+                                    <input type="text" id="contact-name" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-nutri-primary focus:border-transparent" placeholder="Masukkan nama Anda" required>
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 mb-2 font-medium">Email</label>
+                                    <input type="email" id="contact-email" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-nutri-primary focus:border-transparent" placeholder="Masukkan email Anda" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-gray-700 mb-2 font-medium">Subjek</label>
+                                <input type="text" id="contact-subject" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-nutri-primary focus:border-transparent" placeholder="Subjek pesan Anda" required>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label class="block text-gray-700 mb-2 font-medium">Pesan</label>
+                                <textarea id="contact-message" rows="5" class="w-full p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-nutri-primary focus:border-transparent" placeholder="Ketik pesan Anda di sini..." required></textarea>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="bg-gradient-to-r from-nutri-primary to-nutri-accent text-white px-8 py-4 rounded-xl font-semibold text-lg nutri-btn shadow-lg hover:shadow-xl transition-shadow duration-300 w-full sm:w-auto">
+                                    <i class="fas fa-paper-plane mr-2"></i>Kirim Pesan
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -687,6 +729,598 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Food Database by Group Section -->
+        <div class="feature-card p-6 rounded-2xl shadow-card mt-8">
+            <h2 class="text-2xl font-bold text-nutri-green mb-6 text-center">Daftar Bahan Makanan Penukar</h2>
+            
+            <!-- Group Selection Dropdown -->
+            <div class="mb-6">
+                <label class="block text-gray-700 mb-2">Pilih Golongan Makanan:</label>
+                <select id="group-selector" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent">
+                    <option value="">-- Pilih Golongan --</option>
+                    <option value="g1">Golongan I - Sumber Karbohidrat</option>
+                    <option value="g2">Golongan II - Sumber Protein Hewani</option>
+                    <option value="g3">Golongan III - Sumber Protein Nabati</option>
+                    <option value="g4">Golongan IV - Sayuran</option>
+                    <option value="g5">Golongan V - Buah & Gula</option>
+                    <option value="g6">Golongan VI - Susu</option>
+                    <option value="g7">Golongan VII - Minyak</option>
+                </select>
+            </div>
+            
+            <!-- Group Tables Container -->
+            <div id="group-tables-container">
+                <!-- Instructions -->
+                <div id="select-instruction" class="text-center py-10 text-gray-500">
+                    <i class="fas fa-search text-4xl mb-4"></i>
+                    <p class="text-lg">Pilih golongan makanan dari dropdown di atas untuk menampilkan tabel</p>
+                </div>
+                
+                <!-- Golongan I Table -->
+                <div id="g1-table" class="group-table hidden">
+                    <h3 class="text-xl font-semibold text-blue-700 mb-3 flex items-center"><i class="fas fa-layer-group mr-2"></i> Golongan I — Sumber Karbohidrat</h3>
+                    <p class="text-sm text-gray-600 mb-3">1 SP = 175 kalori, 4 g protein, 40 g karbohidrat</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg">
+                            <thead>
+                                <tr class="bg-blue-50">
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Bahan Makanan</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">URT</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Berat (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Nasi</td>
+                                    <td class="border border-gray-300 px-3 py-2">3/4 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">100</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Bubur beras</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">400</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Bihun</td>
+                                    <td class="border border-gray-300 px-3 py-2">1/2 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Mie kering</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Mie basah</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">200</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kentang</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 bj sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">210</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Biskuit</td>
+                                    <td class="border border-gray-300 px-3 py-2">4 bh bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">40</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Krakers</td>
+                                    <td class="border border-gray-300 px-3 py-2">5 bh bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Havermout</td>
+                                    <td class="border border-gray-300 px-3 py-2">5 1/2 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">45</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Makaroni</td>
+                                    <td class="border border-gray-300 px-3 py-2">1/2 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Nasi tim</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">200</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Roti putih</td>
+                                    <td class="border border-gray-300 px-3 py-2">3 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">70</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Singkong</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg</td>
+                                    <td class="border border-gray-300 px-3 py-2">120</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Talas</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg</td>
+                                    <td class="border border-gray-300 px-3 py-2">125</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Ubi</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bj sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">135</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Tepung sagu</td>
+                                    <td class="border border-gray-300 px-3 py-2">8 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Tepung hunkwe</td>
+                                    <td class="border border-gray-300 px-3 py-2">10 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Tepung terigu</td>
+                                    <td class="border border-gray-300 px-3 py-2">5 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Tepung maizena</td>
+                                    <td class="border border-gray-300 px-3 py-2">10 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Tepung beras</td>
+                                    <td class="border border-gray-300 px-3 py-2">8 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Golongan II Table -->
+                <div id="g2-table" class="group-table hidden">
+                    <h3 class="text-xl font-semibold text-green-700 mb-3 flex items-center"><i class="fas fa-drumstick-bite mr-2"></i> Golongan II — Sumber Protein Hewani</h3>
+                    <p class="text-sm text-gray-600 mb-2">Keterangan: Lemak Rendah / Sedang / Tinggi (nilai SP tercantum di dokumen)</p>
+                    
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">Lemak Rendah (1 SP = 50 kalori, 7 g protein, 2 g lemak)</h4>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg">
+                            <thead>
+                                <tr class="bg-green-50">
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Bahan</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">URT</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Berat (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Ayam tanpa kulit</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">40</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Daging kerbau</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">35</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Dideh sapi</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">35</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Ikan</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">40</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Ikan asin</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">15</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Teri kering</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">15</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Udang segar</td>
+                                    <td class="border border-gray-300 px-3 py-2">5 ekor sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">35</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">Lemak Sedang (1 SP = 75 kalori, 7 g protein, 5 g lemak)</h4>
+                    <div class="overflow-x-auto mb-4">
+                        <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg">
+                            <thead>
+                                <tr class="bg-green-100">
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Bahan</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">URT</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Berat (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Bakso</td>
+                                    <td class="border border-gray-300 px-3 py-2">10 bj sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">170</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Daging kambing</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">40</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Daging sapi</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">35</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Hati ayam</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">30</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Hati sapi</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">35</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Otak</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">60</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Telur ayam</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 butir</td>
+                                    <td class="border border-gray-300 px-3 py-2">55</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Telur bebek</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 butir</td>
+                                    <td class="border border-gray-300 px-3 py-2">55</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Usus sapi</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Golongan III Table -->
+                <div id="g3-table" class="group-table hidden">
+                    <h3 class="text-xl font-semibold text-purple-700 mb-3 flex items-center"><i class="fas fa-seedling mr-2"></i> Golongan III — Sumber Protein Nabati</h3>
+                    <p class="text-sm text-gray-600 mb-3">1 SP = 75 kalori, 5 g protein, 3 g lemak, 7 g karbohidrat</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg">
+                            <thead>
+                                <tr class="bg-purple-50">
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Bahan Makanan</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">URT</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Berat (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Tahu</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bj bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">110</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Tempe</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kacang hijau</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">20</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kacang kedelai</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">25</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kacang merah segar</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">20</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kacang tanah</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">15</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Oncom</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 ptg kcl</td>
+                                    <td class="border border-gray-300 px-3 py-2">40</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Golongan IV Section -->
+                <div id="g4-table" class="group-table hidden">
+                    <h3 class="text-xl font-semibold text-yellow-700 mb-3 flex items-center"><i class="fas fa-carrot mr-2"></i> Golongan IV — Sayuran</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Sayuran A (Bebas dimakan)</h4>
+                            <p class="text-sm text-gray-600">Gambas (oyong), Jamur kuping segar, Ketimun, Lobak, Slada, Tomat</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Sayuran B — 1 SP (100 g) = 25 kalori, 1 g protein, 5 g karbohidrat</h4>
+                            <p class="text-sm text-gray-600">Bayam, Bit, Buncis, Brokoli, Caisin, Daun pakis, Daun wuluh, Genjer, Jagung muda, Kol, Kembang kol, Kapri muda, Kangkung, Kucai, Kacang panjang, Pepaya muda, Pare, Rebung, Sawi, Tauge kacang hijau, Terong, Tauge, Labu waluh, Labu siam, Wortel</p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Sayuran C — 1 SP (100 g) = 50 kalori, 3 g protein, 10 g karbohidrat</h4>
+                            <p class="text-sm text-gray-600">Bayam merah, Daun katuk, Daun melinjo, Daun pepaya, Daun singkong, Daun tales, Kacang kapri, Kluwih, Melinjo, Nangka muda, Tauge kacang kedelai</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Golongan V Table -->
+                <div id="g5-table" class="group-table hidden">
+                    <h3 class="text-xl font-semibold text-red-700 mb-3 flex items-center"><i class="fas fa-apple-alt mr-2"></i> Golongan V — Buah & Gula</h3>
+                    <p class="text-sm text-gray-600 mb-3">1 SP = 50 kalori, 12 g karbohidrat</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg">
+                            <thead>
+                                <tr class="bg-red-50">
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Bahan Makanan</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">URT</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Berat (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Anggur</td>
+                                    <td class="border border-gray-300 px-3 py-2">20 bh sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">165</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Apel</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh</td>
+                                    <td class="border border-gray-300 px-3 py-2">85</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Belimbing</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">140</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Blewah</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">70</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Duku</td>
+                                    <td class="border border-gray-300 px-3 py-2">9 bh</td>
+                                    <td class="border border-gray-300 px-3 py-2">70</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Durian</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 bj bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">35</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Jambu air</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 bh bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">110</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Jambu biji</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">100</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Jambu bol</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh kcl</td>
+                                    <td class="border border-gray-300 px-3 py-2">90</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Jeruk manis</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 bh</td>
+                                    <td class="border border-gray-300 px-3 py-2">110</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kedondong</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 bh sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">120</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kurma</td>
+                                    <td class="border border-gray-300 px-3 py-2">3 bh</td>
+                                    <td class="border border-gray-300 px-3 py-2">15</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Leci</td>
+                                    <td class="border border-gray-300 px-3 py-2">10 bh</td>
+                                    <td class="border border-gray-300 px-3 py-2">75</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Madu</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">15</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Mangga</td>
+                                    <td class="border border-gray-300 px-3 py-2">3/4 bh bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">90</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Melon</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">190</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Nangka masak</td>
+                                    <td class="border border-gray-300 px-3 py-2">3 bj sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">45</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Nenas</td>
+                                    <td class="border border-gray-300 px-3 py-2">1/4 bh sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">95</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Pepaya</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">110</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Pisang</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh</td>
+                                    <td class="border border-gray-300 px-3 py-2">50</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Rambutan</td>
+                                    <td class="border border-gray-300 px-3 py-2">8 bh</td>
+                                    <td class="border border-gray-300 px-3 py-2">75</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Salak</td>
+                                    <td class="border border-gray-300 px-3 py-2">2 bh sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">65</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Sawo</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 bh sdg</td>
+                                    <td class="border border-gray-300 px-3 py-2">55</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Semangka</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">60</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Gula*</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">13</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-sm text-gray-600 mt-2">*Gula tidak mengandung vitamin dan mineral, sedangkan buah merupakan sumber vitamin dan mineral.</p>
+                </div>
+                
+                <!-- Golongan VI Table -->
+                <div id="g6-table" class="group-table hidden">
+                    <h3 class="text-xl font-semibold text-indigo-700 mb-3 flex items-center"><i class="fas fa-glass-whiskey mr-2"></i> Golongan VI — Susu</h3>
+                    <p class="text-sm text-gray-600 mb-3">Beberapa keterangan nilai SP tercantum: Susu tanpa lemak (75 kal,7 g pro,10 g karb); Susu rendah lemak (125 kal,7 g pro,6 g lemak,10 g karb); Susu tinggi lemak (150 kal,7 g pro,10 g lemak,10 g karb)</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg">
+                            <thead>
+                                <tr class="bg-indigo-50">
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Bahan Makanan</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">URT</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Berat (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Keju</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg kcl</td>
+                                    <td class="border border-gray-300 px-3 py-2">35</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Susu kambing</td>
+                                    <td class="border border-gray-300 px-3 py-2">3/4 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">165</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Susu sapi</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">200</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Susu kental tak manis</td>
+                                    <td class="border border-gray-300 px-3 py-2">1/2 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">100</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Yoghurt full cream</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">200</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Susu kerbau</td>
+                                    <td class="border border-gray-300 px-3 py-2">1/2 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">100</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Susu full cream bubuk</td>
+                                    <td class="border border-gray-300 px-3 py-2">6 sdm</td>
+                                    <td class="border border-gray-300 px-3 py-2">30</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Golongan VII Table -->
+                <div id="g7-table" class="group-table hidden">
+                    <h3 class="text-xl font-semibold text-orange-700 mb-3 flex items-center"><i class="fas fa-oil-can mr-2"></i> Golongan VII — Minyak</h3>
+                    <p class="text-sm text-gray-600 mb-3">1 SP = 50 kalori, 5 g lemak</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm border-collapse border border-gray-300 rounded-lg">
+                            <thead>
+                                <tr class="bg-orange-50">
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Bahan Makanan</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">URT</th>
+                                    <th class="border border-gray-300 px-3 py-2 text-left">Berat (g)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Avokad</td>
+                                    <td class="border border-gray-300 px-3 py-2">1/2 bh bsr</td>
+                                    <td class="border border-gray-300 px-3 py-2">60</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kacang almond</td>
+                                    <td class="border border-gray-300 px-3 py-2">7 biji</td>
+                                    <td class="border border-gray-300 px-3 py-2">10</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Minyak zaitun</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 sdt</td>
+                                    <td class="border border-gray-300 px-3 py-2">5</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Kelapa</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 ptg kcl</td>
+                                    <td class="border border-gray-300 px-3 py-2">15</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Mentega</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 sdt</td>
+                                    <td class="border border-gray-300 px-3 py-2">5</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Minyak kelapa</td>
+                                    <td class="border border-gray-300 px-3 py-2">1 sdt</td>
+                                    <td class="border border-gray-300 px-3 py-2">5</td>
+                                </tr>
+                                <tr class="hover:bg-gray-50">
+                                    <td class="border border-gray-300 px-3 py-2">Santan</td>
+                                    <td class="border border-gray-300 px-3 py-2">1/3 gls</td>
+                                    <td class="border border-gray-300 px-3 py-2">40</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</div>
 
         <!-- Macro-Micro Nutrients Page -->
         <div id="macro-micro-page" class="page hidden">
@@ -834,7 +1468,6 @@
                             Anda dapat memperoleh asupan zat gizi mikro dan zat gizi makro melalui pola makan bergizi seimbang. Bila Anda masih memiliki pertanyaan, jangan ragu untuk berkonsultasi dengan dokter mengenai pola makan bergizi seimbang dan anjuran menu makan sehat yang cocok bagi kondisi Anda.
                         </p>
                     </div>
-                </div>
             </div>
         </div>
     </main>
@@ -1043,6 +1676,60 @@
 
         // Initialize journal display
         updateJournalDisplay();
+        
+        // Contact form functionality
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const subject = document.getElementById('contact-subject').value;
+            const message = document.getElementById('contact-message').value;
+
+            // Create Gmail compose URL
+            const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=azkiallaelinutria46@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Dari: ${name}
+Email: ${email}
+
+Pesan:
+${message}`)}`;
+
+            // Open Gmail in a new tab/window
+            window.open(gmailLink, '_blank');
+
+            // Show success message
+            alert('Terima kasih! Gmail akan terbuka di tab baru. Silakan kirim pesan Anda.');
+
+            // Reset form
+            this.reset();
+        });
+        
+        // Food database dropdown functionality
+        document.getElementById('group-selector').addEventListener('change', function() {
+            const selectedValue = this.value;
+            
+            // Hide all tables
+            document.querySelectorAll('.group-table').forEach(table => {
+                table.classList.add('hidden');
+            });
+            
+            // Hide instruction message
+            document.getElementById('select-instruction').classList.add('hidden');
+            
+            // Show selected table if value is not empty
+            if (selectedValue) {
+                const tableToShow = document.getElementById(selectedValue + '-table');
+                if (tableToShow) {
+                    tableToShow.classList.remove('hidden');
+                    
+                    // Scroll to the selected table
+                    tableToShow.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            } else {
+                // If no selection, show instruction message
+                document.getElementById('select-instruction').classList.remove('hidden');
+            }
+        });
+        
     </script>
 </body>
 </html>
