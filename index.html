@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NUTRI PINTAR - Edukasi Gizi dan Kalkulator Nutrisi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'nutri-primary': '#10b981',
+                        'nutri-secondary': '#34d399',
+                        'nutri-accent': '#06b6d4',
+                        'nutri-light': '#f0fdf4',
+                        'nutri-dark': '#065f46',
+                        'nutri-bg': '#f8fafc',
+                        'nutri-card': '#ffffff',
+                        'nutri-text': '#1e293b',
+                        'nutri-border': '#e2e8f0',
+                        'nutri-green': '#059669',
+                        'nutri-blue': '#0ea5e9',
+                        'nutri-purple': '#8b5cf6',
+                        'nutri-orange': '#f97316',
+                        'nutri-red': '#ef4444',
+                        'nutri-pink': '#ec4899'
+                    },
+                    fontFamily: {
+                        'sans': ['Poppins', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                        'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+                        'card': '0 4px 12px rgba(0, 0, 0, 0.08)'
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'bounce-slow': 'bounce 3s infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+        }
+        
+        .nutri-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .nutri-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nutri-btn {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nutri-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .nutri-btn:hover::before {
+            left: 100%;
+        }
+        
+        .nutri-btn:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #10b981, #06b6d4);
+            border-radius: 2px;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .feature-card:hover {
+            border-color: #10b981;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+        
+        /* Mobile menu animation */
+        .mobile-menu {
+            opacity: 0;
+            transform: translateY(-15px);
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .mobile-menu.open {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+        
+        .mobile-menu.hidden {
+            display: none;
+        }
+        
+        /* Blob animation for hero section */
+        @keyframes blob {
+            0% {
+                transform: translate(0px, 0px) scale(1);
+            }
+            33% {
+                transform: translate(30px, -50px) scale(1.1);
+            }
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+            100% {
+                transform: translate(0px, 0px) scale(1);
+            }
+        }
+        
+        .animate-blob {
+            animation: blob 7s infinite;
+        }
+        
+        .animation-delay-2000 {
+            animation-delay: 2s;
+        }
+        
+        .animation-delay-4000 {
+            animation-delay: 4s;
+        }
+    </style>
+</head>
+<body class="font-sans bg-nutri-bg min-h-screen">
+    <!-- Header/Navbar -->
+    <header class="glass-effect shadow-lg sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold gradient-text flex items-center">
+                    <i class="fas fa-leaf mr-2"></i>
+                    <span>NUTRI PINTAR</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <button onclick="showPage('home')" class="text-gray-700 hover:text-nutri-green font-medium transition-colors duration-300 flex items-center">
+                        <i class="fas fa-home mr-1"></i> Beranda
+                    </button>
+                    <button onclick="showPage('education')" class="text-gray-700 hover:text-nutri-green font-medium transition-colors duration-300 flex items-center">
+                        <i class="fas fa-graduation-cap mr-1"></i> Informasi Gizi
+                    </button>
+                    <button onclick="showPage('macro-micro')" class="text-gray-700 hover:text-nutri-green font-medium transition-colors duration-300 flex items-center">
+                        <i class="fas fa-seedling mr-1"></i> Zat Gizi
+                    </button>
+                    <button onclick="showPage('calculator')" class="text-gray-700 hover:text-nutri-green font-medium transition-colors duration-300 flex items-center">
+                        <i class="fas fa-calculator mr-1"></i> Kalkulator
+                    </button>
+                    <button onclick="showPage('journal')" class="text-gray-700 hover:text-nutri-green font-medium transition-colors duration-300 flex items-center">
+                        <i class="fas fa-book mr-1"></i> Catatan Harian
+                    </button>
+                </div>
+                <button id="mobile-menu-button" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu md:hidden hidden bg-white shadow-lg">
+            <div class="container mx-auto px-6 py-4">
+                <div class="flex flex-col space-y-3">
+                    <button onclick="showPage('home'); closeMobileMenu();" class="text-gray-700 hover:text-nutri-green font-medium py-2 flex items-center">
+                        <i class="fas fa-home mr-2"></i> Beranda
+                    </button>
+                    <button onclick="showPage('education'); closeMobileMenu();" class="text-gray-700 hover:text-nutri-green font-medium py-2 flex items-center">
+                        <i class="fas fa-graduation-cap mr-2"></i> Informasi Gizi
+                    </button>
+                    <button onclick="showPage('macro-micro'); closeMobileMenu();" class="text-gray-700 hover:text-nutri-green font-medium py-2 flex items-center">
+                        <i class="fas fa-seedling mr-2"></i> Zat Gizi
+                    </button>
+                    <button onclick="showPage('calculator'); closeMobileMenu();" class="text-gray-700 hover:text-nutri-green font-medium py-2 flex items-center">
+                        <i class="fas fa-calculator mr-2"></i> Kalkulator
+                    </button>
+                    <button onclick="showPage('journal'); closeMobileMenu();" class="text-gray-700 hover:text-nutri-green font-medium py-2 flex items-center">
+                        <i class="fas fa-book mr-2"></i> Catatan Harian
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="container mx-auto px-6 py-8">
+        <!-- Home Page -->
+        <div id="home-page" class="page">
+            <div class="min-h-screen flex items-center justify-center relative overflow-hidden">
+                <!-- Background elements -->
+                <div class="absolute inset-0 overflow-hidden">
+                    <div class="absolute -top-48 -left-48 w-96 h-96 bg-green-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
+                    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
+                    <div class="absolute top-40 left-1/2 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
+                </div>
+                
+                <div class="relative z-10 text-center px-6">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text mb-6 leading-tight">NUTRI PINTAR</h1>
+                    <p class="text-xl md:text-2xl text-gray-600 mb-10 max-w-4xl mx-auto px-4">
+                        Platform edukasi gizi yang membantu Anda memahami kebutuhan nutrisi harian dan mencapai gaya hidup sehat
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                        <button onclick="showPage('education')" class="bg-gradient-to-r from-nutri-primary to-nutri-accent text-white px-8 py-4 rounded-xl font-semibold nutri-btn text-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-graduation-cap mr-2"></i>Pelajari Gizi
+                        </button>
+                        <button onclick="showPage('calculator')" class="bg-white text-nutri-green border-2 border-nutri-primary px-8 py-4 rounded-xl font-semibold nutri-btn text-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-calculator mr-2"></i>Hitung Kebutuhan
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="py-20">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-16">Layanan Kami</h2>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <div class="feature-card p-8 rounded-2xl shadow-card text-center nutri-card group hover:scale-105 transition-transform duration-300">
+                            <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-graduation-cap text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Informasi Gizi</h3>
+                            <p class="text-gray-600">Pelajari tentang gizi seimbang, makronutrien, dan mikronutrien</p>
+                            <div class="mt-4">
+                                <div class="h-1 w-12 bg-gradient-to-r from-nutri-primary to-nutri-accent mx-auto rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="feature-card p-8 rounded-2xl shadow-card text-center nutri-card group hover:scale-105 transition-transform duration-300">
+                            <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-seedling text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Zat Gizi</h3>
+                            <p class="text-gray-600">Pelajari makro dan mikronutrien secara mendalam</p>
+                            <div class="mt-4">
+                                <div class="h-1 w-12 bg-gradient-to-r from-nutri-primary to-nutri-accent mx-auto rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="feature-card p-8 rounded-2xl shadow-card text-center nutri-card group hover:scale-105 transition-transform duration-300">
+                            <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-calculator text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Kalkulator</h3>
+                            <p class="text-gray-600">Hitung kebutuhan kalori dan makro harian Anda</p>
+                            <div class="mt-4">
+                                <div class="h-1 w-12 bg-gradient-to-r from-nutri-primary to-nutri-accent mx-auto rounded-full"></div>
+                            </div>
+                        </div>
+                        <div class="feature-card p-8 rounded-2xl shadow-card text-center nutri-card group hover:scale-105 transition-transform duration-300">
+                            <div class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                                <i class="fas fa-book-medical text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-3 text-gray-800">Catatan Harian</h3>
+                            <p class="text-gray-600">Catat asupan nutrisi harian Anda</p>
+                            <div class="mt-4">
+                                <div class="h-1 w-12 bg-gradient-to-r from-nutri-primary to-nutri-accent mx-auto rounded-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="bg-gradient-to-r from-nutri-primary to-nutri-accent py-16 text-white text-center">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-6">Mulai Perjalanan Gizi Anda Sekarang</h2>
+                    <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Ketahui kebutuhan nutrisi Anda dan buat pilihan makanan yang lebih sehat</p>
+                    <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                        <button onclick="showPage('education')" class="bg-white text-nutri-green px-8 py-4 rounded-xl font-semibold nutri-btn text-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-graduation-cap mr-2"></i>Pelajari Gizi
+                        </button>
+                        <button onclick="showPage('calculator')" class="bg-nutri-dark text-white px-8 py-4 rounded-xl font-semibold nutri-btn text-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                            <i class="fas fa-calculator mr-2"></i>Hitung Kebutuhan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Education Page -->
+        <div id="education-page" class="page hidden">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 section-title">Informasi Gizi</h1>
+
+            <div class="space-y-8">
+                <!-- Gizi Seimbang - Comprehensive Section -->
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-4">Gizi Seimbang - Isi Piringku</h2>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 mb-4">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-2 flex items-center"><i class="fas fa-utensils mr-2"></i> Prinsip Isi Piringku</h3>
+                        <p class="text-gray-700 mb-3">
+                            Prinsip gizi seimbang menekankan pentingnya mengonsumsi berbagai jenis makanan dalam porsi yang tepat:
+                        </p>
+                        <ul class="space-y-2 text-gray-700">
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <strong>1/4 piring:</strong> Karbohidrat kompleks (nasi, jagung, gandum, ubi)</li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <strong>1/4 piring:</strong> Protein hewani (daging, ikan, telur) atau protein nabati (kacang-kacangan)</li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <strong>1/2 piring:</strong> Sayur dan buah (berwarna-warni, beragam jenis)</li>
+                            <li class="flex items-start"><i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i> <strong>Air putih:</strong> Secukupnya (minimal 8 gelas sehari)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center"><i class="fas fa-info-circle text-nutri-green mr-2"></i> Manfaat Gizi Seimbang</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start"><i class="fas fa-star text-yellow-500 mt-1 mr-2"></i> Meningkatkan sistem kekebalan tubuh</li>
+                                <li class="flex items-start"><i class="fas fa-star text-yellow-500 mt-1 mr-2"></i> Menjaga berat badan ideal</li>
+                                <li class="flex items-start"><i class="fas fa-star text-yellow-500 mt-1 mr-2"></i> Mencegah penyakit kronis (diabetes, jantung, stroke)</li>
+                                <li class="flex items-start"><i class="fas fa-star text-yellow-500 mt-1 mr-2"></i> Meningkatkan konsentrasi dan energi sepanjang hari</li>
+                                <li class="flex items-start"><i class="fas fa-star text-yellow-500 mt-1 mr-2"></i> Membantu pertumbuhan dan pemeliharaan jaringan tubuh</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-3 flex items-center"><i class="fas fa-utensils text-nutri-green mr-2"></i> Contoh Menu Sehari-hari</h3>
+                            <div class="bg-green-50 p-3 rounded-lg border border-green-200">
+                                <p class="text-gray-700 mb-2"><strong>Sarapan:</strong> Nasi merah, telur dadar, sayur bayam, buah pisang</p>
+                                <p class="text-gray-700 mb-2"><strong>Makan Siang:</strong> Nasi putih, ikan bakar, sayur asem, sambal terong</p>
+                                <p class="text-gray-700"><strong>Makan Malam:</strong> Bubur kacang hijau, tahu tempe, sayur bening, buah jambu</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                        <h3 class="text-lg font-semibold text-yellow-700 mb-2 flex items-center"><i class="fas fa-exclamation-triangle text-yellow-600 mr-2"></i> Tips Mengonsumsi Gizi Seimbang</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <p class="text-gray-700"><strong>Gunakan piring gizi:</strong> Patuhi komposisi Isi Piringku</p>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <p class="text-gray-700"><strong>Variasi makanan:</strong> Konsumsi berbagai jenis makanan</p>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <p class="text-gray-700"><strong>Proses pengolahan:</strong> Masak dengan cara sehat (kukus, rebus, bakar)</p>
+                            </div>
+                            <div class="flex items-start">
+                                <i class="fas fa-check-circle text-green-500 mt-1 mr-2"></i>
+                                <p class="text-gray-700"><strong>Konsumsi secara teratur:</strong> Makan 3 kali sehari secara teratur</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <!-- Hidrasi -->
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-4 flex items-center"><i class="fas fa-tint mr-2"></i>Pentingnya Hidrasi</h2>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 mb-4">
+                        <p class="text-gray-700 mb-3">
+                            Sahabat Sehat, tahukah bahwa dengan mencukupi kebutuhan cairan tubuh sehari-hari dapat membuat tubuh terhidrasi serta membantu menjaga konsentrasi?
+                        </p>
+                        <p class="text-gray-700">
+                            Air merupakan elemen penting bagi kehidupan seluruh makhluk hidup, tak terkecuali manusia. Faktanya, air merupakan zat gizi esensial dan sekitar 60% tubuh manusia tersusun atas air.
+                        </p>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center"><i class="fas fa-heart text-red-500 mr-2"></i>Kebaikan Hidrasi Bagi Tubuh</h3>
+                    <div class="space-y-4">
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-bolt text-yellow-500 mr-2"></i>1. Mendistribusikan Oksigen dan Zat Gizi</h4>
+                            <p class="text-gray-700">
+                                Darah bertugas untuk mendistribusikan oksigen dan berbagai zat gizi ke seluruh sel tubuh. Lebih dari 90 persen kandungan plasma darah adalah air, sehingga jika Sahabat Sehat mengalami dehidrasi dapat menyebabkan gagal sirkulasi.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-thermometer-half text-orange-500 mr-2"></i>2. Mengatur Suhu Tubuh</h4>
+                            <p class="text-gray-700">
+                                Keringat akan bercucuran jika Sahabat Sehat berada di ruangan yang cukup panas atau setelah berolahraga. Keringat tersebut berfungsi untuk membawa keluar panas tubuh agar suhunya tetap berada pada kisaran normal (36,5–37,2 derajat Celcius).
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-utensils text-green-500 mr-2"></i>3. Mendukung Fungsi Pencernaan</h4>
+                            <p class="text-gray-700">
+                                Proses pencernaan makanan pada tubuh Sahabat Sehat sangat bergantung dengan ketersediaan air. Oleh sebab itu, kebutuhan cairan tubuh yang tidak terpenuhi dapat menyebabkan masalah pada saluran pencernaan seperti konstipasi dan asam lambung.
+                            </p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm">
+                            <h4 class="font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-brain text-purple-500 mr-2"></i>4. Menjaga Konsentrasi dan Suasana Hati</h4>
+                            <p class="text-gray-700">
+                                Beberapa dampak dehidrasi ringan adalah gangguan pada fungsi kognitif yang dapat langsung dirasakan, seperti mudah lelah, mengantuk, dan penurunan daya ingat. Dengan cukup minum, Sahabat Sehat bisa terhindar dari gejala-gejala tersebut dan dapat tetap fokus dalam menjalani aktivitas sehari-hari dengan kognitif, konsentrasi, dan suasana hati yang baik.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator Page -->
+        <div id="calculator-page" class="page hidden">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 section-title">Kalkulator Kebutuhan Kalori</h1>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-6 text-center">Masukkan Data Anda</h2>
+                    <form id="calorie-form">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Jenis Kelamin</label>
+                            <div class="flex space-x-4">
+                                <label class="flex items-center bg-gray-50 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                                    <input type="radio" name="gender" value="male" class="mr-2" required>
+                                    <span><i class="fas fa-mars text-blue-500 mr-1"></i> Pria</span>
+                                </label>
+                                <label class="flex items-center bg-gray-50 p-3 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
+                                    <input type="radio" name="gender" value="female" class="mr-2" required>
+                                    <span><i class="fas fa-venus text-pink-500 mr-1"></i> Wanita</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Usia (tahun)</label>
+                            <input type="number" name="age" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Tinggi Badan (cm)</label>
+                            <input type="number" name="height" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Berat Badan (kg)</label>
+                            <input type="number" name="weight" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                        </div>
+
+                        <div class="mb-6">
+                            <label class="block text-gray-700 mb-2">Faktor Aktivitas</label>
+                            <select name="activity" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                                <option value="">Pilih aktivitas</option>
+                                <option value="1.2">Sedentari (jarang berolahraga)</option>
+                                <option value="1.375">Aktivitas Ringan (olahraga 1-3 hari/minggu)</option>
+                                <option value="1.55">Aktivitas Sedang (olahraga 3-5 hari/minggu)</option>
+                                <option value="1.725">Aktivitas Berat (olahraga 6-7 hari/minggu)</option>
+                                <option value="1.9">Sangat Aktif (olahraga intensif setiap hari)</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-nutri-primary to-nutri-accent text-white py-3 rounded-lg font-semibold nutri-btn pulse">
+                            <i class="fas fa-calculator mr-2"></i>Hitung Kebutuhan Kalori
+                        </button>
+                    </form>
+                </div>
+
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-6 text-center">Hasil Kalkulasi</h2>
+                    <div id="result" class="hidden">
+                        <div class="mb-4 p-4 bg-gradient-to-r from-nutri-primary to-nutri-accent rounded-xl text-white">
+                            <h3 class="text-lg font-semibold mb-1">Total Kalori Harian (TDEE)</h3>
+                            <p id="tdee-result" class="text-2xl font-bold"></p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                <div class="flex items-center mb-1">
+                                    <i class="fas fa-wheat-alt text-blue-600 mr-2"></i>
+                                    <h4 class="font-semibold text-blue-800">Karbohidrat</h4>
+                                </div>
+                                <p id="carbs-result" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="p-3 bg-green-50 rounded-lg border border-green-200">
+                                <div class="flex items-center mb-1">
+                                    <i class="fas fa-drumstick-bite text-green-600 mr-2"></i>
+                                    <h4 class="font-semibold text-green-800">Protein</h4>
+                                </div>
+                                <p id="protein-result" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="p-3 bg-yellow-50 rounded-lg border border-yellow-200">
+                                <div class="flex items-center mb-1">
+                                    <i class="fas fa-cheese text-yellow-600 mr-2"></i>
+                                    <h4 class="font-semibold text-yellow-800">Lemak</h4>
+                                </div>
+                                <p id="fat-result" class="text-lg font-bold"></p>
+                            </div>
+                            <div class="p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                <div class="flex items-center mb-1">
+                                    <i class="fas fa-fire text-purple-600 mr-2"></i>
+                                    <h4 class="font-semibold text-purple-800">Kalori</h4>
+                                </div>
+                                <p id="calories-breakdown" class="text-lg font-bold"></p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+                            <h4 class="font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-calculator text-gray-600 mr-2"></i>Rumus yang Digunakan</h4>
+                            <p class="text-sm text-gray-600">
+                                Mifflin-St Jeor:<br>
+                                Pria: (10 × berat) + (6.25 × tinggi) – (5 × usia) + 5<br>
+                                Wanita: (10 × berat) + (6.25 × tinggi) – (5 × usia) – 161<br>
+                                TDEE = BMR × faktor aktivitas
+                            </p>
+                        </div>
+                    </div>
+
+                    <div id="no-result" class="text-center text-gray-500 py-8">
+                        <i class="fas fa-calculator text-4xl text-gray-300 mb-4"></i>
+                        <p>Masukkan data Anda untuk melihat hasil kalkulasi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Journal Page -->
+        <div id="journal-page" class="page hidden">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 section-title">Catatan Nutrisi Harian</h1>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-6 text-center">Tambahkan Makanan/Minuman</h2>
+                    <form id="food-form">
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Nama Makanan/Minuman</label>
+                            <input type="text" id="food-name" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-2">Porsi/Keterangan</label>
+                            <input type="text" id="food-portion" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Kalori</label>
+                                <input type="number" id="food-calories" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Karbohidrat (g)</label>
+                                <input type="number" id="food-carbs" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div>
+                                <label class="block text-gray-700 mb-2">Protein (g)</label>
+                                <input type="number" id="food-protein" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 mb-2">Lemak (g)</label>
+                                <input type="number" id="food-fat" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-nutri-primary focus:border-transparent" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full bg-gradient-to-r from-nutri-primary to-nutri-accent text-white py-3 rounded-lg font-semibold nutri-btn">
+                            <i class="fas fa-plus-circle mr-2"></i>Tambah ke Tabel
+                        </button>
+                    </form>
+                </div>
+
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-6 text-center">Ringkasan Harian</h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-fire text-orange-500 mr-2"></i>
+                                <span class="font-semibold">Total Kalori:</span>
+                            </div>
+                            <span id="total-calories" class="text-xl font-bold text-orange-600">0</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl border border-blue-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-wheat-alt text-blue-500 mr-2"></i>
+                                <span class="font-semibold">Total Karbohidrat:</span>
+                            </div>
+                            <span id="total-carbs" class="text-xl font-bold text-blue-600">0g</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gradient-to-r from-green-50 to-green-100 rounded-xl border border-green-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-drumstick-bite text-green-500 mr-2"></i>
+                                <span class="font-semibold">Total Protein:</span>
+                            </div>
+                            <span id="total-protein" class="text-xl font-bold text-green-600">0g</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl border border-yellow-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-cheese text-yellow-500 mr-2"></i>
+                                <span class="font-semibold">Total Lemak:</span>
+                            </div>
+                            <span id="total-fat" class="text-xl font-bold text-yellow-600">0g</span>
+                        </div>
+                        <button onclick="resetJournal()" class="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-lg font-semibold mt-4 nutri-btn">
+                            <i class="fas fa-sync-alt mr-2"></i>Reset Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature-card p-6 rounded-2xl shadow-card">
+                <h2 class="text-2xl font-semibold text-nutri-green mb-6 text-center">Riwayat Konsumsi</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gradient-to-r from-nutri-primary to-nutri-accent text-white">
+                                <th class="p-3 text-left rounded-l-lg">No</th>
+                                <th class="p-3 text-left">Nama Makanan</th>
+                                <th class="p-3 text-left">Porsi</th>
+                                <th class="p-3 text-left">Kalori</th>
+                                <th class="p-3 text-left">Karbo</th>
+                                <th class="p-3 text-left">Protein</th>
+                                <th class="p-3 text-left">Lemak</th>
+                                <th class="p-3 text-left rounded-r-lg">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="food-table-body">
+                            <!-- Data will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Macro-Micro Nutrients Page -->
+        <div id="macro-micro-page" class="page hidden">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8 section-title">Zat Gizi: Makro & Mikro</h1>
+
+            <div class="space-y-8">
+                <!-- Introduction -->
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-4">Perbedaan Zat Gizi Mikro dan Zat Gizi Makro</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                            <h3 class="text-xl font-semibold text-blue-700 mb-3 flex items-center"><i class="fas fa-microchip text-blue-600 mr-2"></i> Zat Gizi Mikro</h3>
+                            <p class="text-gray-700 mb-3">
+                                Zat gizi mikro merupakan nutrisi yang terkandung dalam tubuh dengan jumlah sedikit. Meski jumlahnya sedikit, kebutuhan zat gizi mikro tetap perlu dicukupi karena fungsinya bagi tubuh ada banyak, misalnya proses pertumbuhan, kekebalan tubuh, dan perkembangan otak.
+                            </p>
+                            <p class="text-gray-700">
+                                <strong>Contoh:</strong> Vitamin dan mineral
+                            </p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-xl border border-green-200">
+                            <h3 class="text-xl font-semibold text-green-700 mb-3 flex items-center"><i class="fas fa-weight-hanging text-green-600 mr-2"></i> Zat Gizi Makro</h3>
+                            <p class="text-gray-700 mb-3">
+                                Zat gizi makro dalam tubuh memiliki jumlah yang lebih banyak daripada zat gizi mikro. Zat gizi ini berfungsi sebagai sumber energi agar tubuh dapat melakukan berbagai aktivitas, sehingga dibutuhkan dalam jumlah besar.
+                            </p>
+                            <p class="text-gray-700">
+                                <strong>Contoh:</strong> Karbohidrat, protein, dan lemak
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-yellow-50 p-4 rounded-xl border border-yellow-200">
+                        <p class="text-gray-700 mb-2">
+                            <strong>Intinya,</strong> baik zat gizi mikro maupun zat gizi makro memiliki peran yang sama pentingnya bagi kelancaran fungsi tubuh. Oleh karena itu, asupan kedua zat gizi ini perlu dipenuhi sesuai kebutuhan.
+                        </p>
+                        <p class="text-gray-700">
+                            Kebutuhannya pun berbeda-beda bagi setiap orang dan biasanya dibedakan berdasarkan usia, jenis kelamin, aktivitas fisik, maupun kondisi medis atau penyakit tertentu.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Macronutrients -->
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-4 flex items-center"><i class="fas fa-apple-alt mr-2"></i>Berbagai Jenis Zat Gizi Makro</h2>
+                    <div class="space-y-6">
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-bread-slice text-yellow-600 mr-2"></i>Karbohidrat</h3>
+                            <p class="text-gray-700 mb-2">
+                                Karbohidrat adalah zat gizi makro yang berfungsi sebagai sumber energi utama bagi sel-sel dalam tubuh untuk menjalankan fungsinya secara normal. Tubuh akan mengubah karbohidrat menjadi glukosa yang dapat digunakan langsung maupun dijadikan cadangan energi.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-3">
+                                <div class="bg-yellow-50 p-3 rounded-lg">
+                                    <h4 class="font-semibold text-yellow-700 mb-1">Karbohidrat Kompleks</h4>
+                                    <p class="text-sm text-gray-600">Diperoleh dari sayuran, buah-buahan, dan kacang-kacangan. Lebih sehat karena tidak meningkatkan gula darah secara drastis.</p>
+                                    <p class="text-xs text-gray-500 mt-1">Contoh: nasi merah, gandum, ubi</p>
+                                </div>
+                                <div class="bg-orange-50 p-3 rounded-lg">
+                                    <h4 class="font-semibold text-orange-700 mb-1">Karbohidrat Sederhana</h4>
+                                    <p class="text-sm text-gray-600">Dapat meningkatkan gula darah dengan cepat, lebih cocok untuk penderita diabetes.</p>
+                                    <p class="text-xs text-gray-500 mt-1">Contoh: nasi putih, roti tawar, kue, permen</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-drumstick-bite text-red-600 mr-2"></i>Protein</h3>
+                            <p class="text-gray-700 mb-2">
+                                Zat gizi makro ini dicerna menjadi asam amino yang berperan dalam pembentukan jaringan dalam tubuh. Ada sekitar 20 jenis asam amino yang penting bagi tubuh, tetapi 9 di antaranya tidak bisa diproduksi sendiri oleh tubuh dan hanya bisa diperoleh dari makanan.
+                            </p>
+                            <div class="bg-red-50 p-3 rounded-lg mt-3">
+                                <h4 class="font-semibold text-red-700 mb-1">Asam Amino Esensial</h4>
+                                <p class="text-sm text-gray-600">Kesembilan asam amino esensial hanya bisa diperoleh dari makanan seperti daging, ikan, telur, belut, serta olahan susu.</p>
+                                <p class="text-xs text-gray-500 mt-1">Sumber: daging, ikan, telur, susu, kacang-kacangan</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2 flex items-center"><i class="fas fa-cheese text-yellow-600 mr-2"></i>Lemak</h3>
+                            <p class="text-gray-700 mb-2">
+                                Lemak sebenarnya termasuk dalam kelompok zat gizi makro yang diperlukan oleh tubuh. Apabila dikonsumsi dalam jumlah yang wajar, lemak berfungsi sebagai cadangan energi dan pelindung organ tubuh, serta berperan dalam pengaturan suhu.
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4 mt-3">
+                                <div class="bg-purple-50 p-3 rounded-lg">
+                                    <h4 class="font-semibold text-purple-700 mb-1">Lemak Jenuh</h4>
+                                    <p class="text-sm text-gray-600">Terkandung dalam daging dan produk olahan susu. Dapat meningkatkan risiko penyakit kardiovaskular jika dikonsumsi berlebihan.</p>
+                                    <p class="text-xs text-gray-500 mt-1">Contoh: daging merah, susu full cream</p>
+                                </div>
+                                <div class="bg-cyan-50 p-3 rounded-lg">
+                                    <h4 class="font-semibold text-cyan-700 mb-1">Lemak Tak Jenuh</h4>
+                                    <p class="text-sm text-gray-600">Bisa mengurangi risiko penyakit kardiovaskular. Lebih sehat untuk dikonsumsi.</p>
+                                    <p class="text-xs text-gray-500 mt-1">Contoh: ikan, alpukat, kacang-kacangan</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Micronutrients -->
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <h2 class="text-2xl font-semibold text-nutri-green mb-4 flex items-center"><i class="fas fa-capsules mr-2"></i>Berbagai Jenis Zat Gizi Mikro</h2>
+                    <div class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                                <h3 class="text-xl font-semibold text-purple-700 mb-3 flex items-center"><i class="fas fa-vial mr-2"></i>Vitamin</h3>
+                                <p class="text-gray-700 mb-3">
+                                    Vitamin termasuk ke dalam kelompok zat gizi mikro yang diperlukan oleh tubuh. Anda dapat memperoleh vitamin dari sayur, buah, kacang-kacangan, daging, ikan, maupun suplemen tambahan. 
+                                </p>
+                                <div class="space-y-3">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Vitamin Larut Air</h4>
+                                        <p class="text-sm text-gray-600">Contoh: vitamin B dan vitamin C. Berfungsi untuk memperkuat sel-sel dalam tubuh dan meningkatkan fungsi otak.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Vitamin Larut Lemak</h4>
+                                        <p class="text-sm text-gray-600">Contoh: vitamin A, D, E, dan K. Penting untuk kesehatan mata, sistem kekebalan tubuh, serta penyembuhan luka.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-200">
+                                <h3 class="text-xl font-semibold text-indigo-700 mb-3 flex items-center"><i class="fas fa-bone mr-2"></i>Mineral</h3>
+                                <p class="text-gray-700 mb-3">
+                                    Sama halnya dengan vitamin, mineral juga merupakan sumber zat gizi mikro. Mineral terkandung dalam berbagai makanan seperti makanan laut, daging, buah, sayur, dan kacang-kacangan.
+                                </p>
+                                <div class="space-y-3">
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Makromineral</h4>
+                                        <p class="text-sm text-gray-600">Contoh: kalsium, magnesium, natrium, dan kalium. Penting untuk kesehatan tulang dan otot serta mengendalikan tekanan darah.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800">Mikromineral</h4>
+                                        <p class="text-sm text-gray-600">Contoh: zat besi, mangan, zinc, tembaga, selenium, dan seng. Penting untuk produksi sel darah merah, menjaga kesehatan otot, dan memperbaiki kerusakan sel.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conclusion -->
+                <div class="feature-card p-6 rounded-2xl shadow-card">
+                    <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold mb-3 flex items-center"><i class="fas fa-balance-scale mr-2"></i>Keseimbangan Zat Gizi</h3>
+                        <p class="mb-3">
+                            Keseimbangan zat gizi mikro dan zat gizi makro sangat penting untuk menjaga kesehatan serta kelancaran fungsi tubuh Anda. Kekurangan atau kelebihan mikronutrien maupun makronutrien bisa menyebabkan berbagai gangguan kesehatan, seperti infeksi, penyakit kardiovaskular, dan malnutrisi.
+                        </p>
+                        <p>
+                            Anda dapat memperoleh asupan zat gizi mikro dan zat gizi makro melalui pola makan bergizi seimbang. Bila Anda masih memiliki pertanyaan, jangan ragu untuk berkonsultasi dengan dokter mengenai pola makan bergizi seimbang dan anjuran menu makan sehat yang cocok bagi kondisi Anda.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-8 mt-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; 2025 NUTRI PINTAR. Platform edukasi gizi </p>
+            <p class="mt-2 text-gray-400">Dibuat untuk tugas mahasiswa gizi - Universitas Islam Negeri Walisongo</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page navigation
+        function showPage(pageName) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.add('hidden'));
+
+            const targetPage = document.getElementById(pageName + '-page');
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                // Add animation to the new page
+                targetPage.style.opacity = '0';
+                targetPage.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    targetPage.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    targetPage.style.opacity = '1';
+                    targetPage.style.transform = 'translateY(0)';
+                }, 10);
+                
+                // Scroll to top when changing pages
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        // Initialize with home page
+        showPage('home');
+
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', function() {
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    mobileMenu.classList.add('open');
+                }, 10);
+            } else {
+                mobileMenu.classList.remove('open');
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300); // Match the transition time
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const isClickInsideNav = mobileMenuButton.contains(event.target) || mobileMenu.contains(event.target);
+            
+            if (!isClickInsideNav && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300); // Match the transition time
+            }
+        });
+
+        // Function to close mobile menu
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('open');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300); // Match the transition time
+        }
+
+        // Calorie calculator
+        document.getElementById('calorie-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const gender = formData.get('gender');
+            const age = parseFloat(formData.get('age'));
+            const height = parseFloat(formData.get('height'));
+            const weight = parseFloat(formData.get('weight'));
+            const activity = parseFloat(formData.get('activity'));
+
+            // Calculate BMR using Mifflin-St Jeor equation
+            let bmr;
+            if (gender === 'male') {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+            } else {
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) - 161;
+            }
+
+            // Calculate TDEE
+            const tdee = bmr * activity;
+
+            // Calculate macro needs (60% carbs, 25% fat, 15% protein)
+            const carbsCal = tdee * 0.6;
+            const proteinCal = tdee * 0.15;
+            const fatCal = tdee * 0.25;
+
+            const carbsGram = carbsCal / 4;
+            const proteinGram = proteinCal / 4;
+            const fatGram = fatCal / 9;
+
+            // Display results
+            document.getElementById('tdee-result').textContent = Math.round(tdee) + ' kalori';
+            document.getElementById('carbs-result').textContent = Math.round(carbsGram) + 'g';
+            document.getElementById('protein-result').textContent = Math.round(proteinGram) + 'g';
+            document.getElementById('fat-result').textContent = Math.round(fatGram) + 'g';
+            document.getElementById('calories-breakdown').textContent = `${Math.round(carbsCal)} | ${Math.round(proteinCal)} | ${Math.round(fatCal)}`;
+
+            document.getElementById('result').classList.remove('hidden');
+            document.getElementById('no-result').classList.add('hidden');
+        });
+
+        // Food journal
+        let foodEntries = JSON.parse(localStorage.getItem('foodEntries')) || [];
+        let entryId = Date.now();
+
+        function updateJournalDisplay() {
+            const tbody = document.getElementById('food-table-body');
+            tbody.innerHTML = '';
+
+            let totalCalories = 0;
+            let totalCarbs = 0;
+            let totalProtein = 0;
+            let totalFat = 0;
+
+            foodEntries.forEach((entry, index) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-200 hover:bg-gray-50 transition-colors';
+                row.innerHTML = `
+                    <td class="p-3">${index + 1}</td>
+                    <td class="p-3 font-medium">${entry.name}</td>
+                    <td class="p-3">${entry.portion}</td>
+                    <td class="p-3">${entry.calories}</td>
+                    <td class="p-3">${entry.carbs}g</td>
+                    <td class="p-3">${entry.protein}g</td>
+                    <td class="p-3">${entry.fat}g</td>
+                    <td class="p-3">
+                        <button onclick="deleteEntry(${entry.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full text-sm nutri-btn transition-colors">
+                            <i class="fas fa-trash mr-1"></i>Hapus
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+
+                totalCalories += entry.calories;
+                totalCarbs += entry.carbs;
+                totalProtein += entry.protein;
+                totalFat += entry.fat;
+            });
+
+            document.getElementById('total-calories').textContent = totalCalories;
+            document.getElementById('total-carbs').textContent = totalCarbs + 'g';
+            document.getElementById('total-protein').textContent = totalProtein + 'g';
+            document.getElementById('total-fat').textContent = totalFat + 'g';
+
+            localStorage.setItem('foodEntries', JSON.stringify(foodEntries));
+        }
+
+        document.getElementById('food-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const entry = {
+                id: entryId++,
+                name: document.getElementById('food-name').value,
+                portion: document.getElementById('food-portion').value,
+                calories: parseInt(document.getElementById('food-calories').value),
+                carbs: parseInt(document.getElementById('food-carbs').value),
+                protein: parseInt(document.getElementById('food-protein').value),
+                fat: parseInt(document.getElementById('food-fat').value)
+            };
+
+            foodEntries.push(entry);
+            updateJournalDisplay();
+
+            // Reset form
+            this.reset();
+            
+            // Show success animation
+            const form = this;
+            form.style.transform = 'scale(0.98)';
+            setTimeout(() => {
+                form.style.transform = 'scale(1)';
+            }, 300);
+        });
+
+        function deleteEntry(id) {
+            foodEntries = foodEntries.filter(entry => entry.id !== id);
+            updateJournalDisplay();
+        }
+
+        function resetJournal() {
+            if (confirm('Apakah Anda yakin ingin mereset semua data catatan nutrisi?')) {
+                foodEntries = [];
+                updateJournalDisplay();
+            }
+        }
+
+        // Initialize journal display
+        updateJournalDisplay();
+    </script>
+</body>
+</html>
